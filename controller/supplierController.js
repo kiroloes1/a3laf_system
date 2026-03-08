@@ -138,7 +138,7 @@ exports.FilterSupplier = async (req, res) => {
 exports.collection = async (req, res) => {
   try {
     const id = req.params.id;
-    let { collectionPaid, typeCollection } = req.body;
+    let { collectionPaid, typeCollection ,note } = req.body;
 
     if (collectionPaid <= 0) {
       return res.status(400).json({ message: "Please enter a valid amount" });
@@ -160,7 +160,7 @@ exports.collection = async (req, res) => {
     const updateBalance = typeCollection === "out" ? remainingPayment : -remainingPayment;
     await suppliersModel.findByIdAndUpdate(id, {
       $inc: { remainingBalance: updateBalance },
-      $push: { payments: { amount: remainingPayment, typeCollection } }
+      $push: { payments: { amount: remainingPayment, typeCollection ,note} }
     });
 
     for (let purchase of supplier.purchases) {
@@ -183,6 +183,16 @@ exports.collection = async (req, res) => {
         });
       }
     }
+
+    res.status(200).json({
+      message: "Collection applied successfully and updated supplier invoices"
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
 
     res.status(200).json({
       message: "Collection applied successfully and updated supplier invoices"
@@ -313,6 +323,7 @@ exports.addToSupplierBalance = async (req, res) => {
 //         res.status(500).json({ message: "server error" });
 //     }
 // };
+
 
 
 
