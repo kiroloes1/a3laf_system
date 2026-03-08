@@ -194,15 +194,7 @@ exports.collection = async (req, res) => {
   }
 };
 
-    res.status(200).json({
-      message: "Collection applied successfully and updated supplier invoices"
-    });
 
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-};
 
 
 // Create new supplier
@@ -323,6 +315,7 @@ exports.addToSupplierBalance = async (req, res) => {
 //         res.status(500).json({ message: "server error" });
 //     }
 // };
+
 
 
 
